@@ -59,7 +59,7 @@ public class LZWEncoder {
     }
 
     public static void main(String[] args) {
-        String filename = "smol-movie.txt";
+        String filename = args[0];
         
         LZWEncoder.encodeFile(filename);
         //Outputs a set of space delimited integers corresponding to each character's location within the library
