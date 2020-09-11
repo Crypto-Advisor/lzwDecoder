@@ -19,6 +19,7 @@ public class LZWEncoder {
             HashMap<String, Integer> dictionary = new HashMap<String, Integer>();
 
             String P = "";
+            String encodedString = "";
 
             for (int i = 0; i < 128; ++i) {
                 dictionary.put("" + (char)i, i);
@@ -36,17 +37,19 @@ public class LZWEncoder {
                 //        - P = C 
 
                 String PC = P + (char)current;
-
+                
                 if (dictionary.containsKey(PC)) {
                     P = PC;
                 } else {
-                    writer.write(dictionary.get(P));
+                    encodedString += (dictionary.get(P))+ " ";
                     dictionary.put(PC, currentKey);
                     currentKey += 1;
                     P = "" + (char)current;
                 }
             }
-
+            
+            writer.write(encodedString);
+   
             reader.close();
             writer.close();
 
@@ -56,8 +59,9 @@ public class LZWEncoder {
     }
 
     public static void main(String[] args) {
-        String filename = args[0];
-
+        String filename = "smol-movie.txt";
+        
         LZWEncoder.encodeFile(filename);
+        //Outputs a set of space delimited integers corresponding to each character's location within the library
     }
 }
