@@ -21,7 +21,7 @@ public class LZWEncoder {
             String P = "";
             String encodedString = "";
 
-            int currentKey = 128;
+            int currentKey = 0x100;
 
             for (int i = 0; i < currentKey; ++i) {
                 dictionary.put("" + (char)i, i);
