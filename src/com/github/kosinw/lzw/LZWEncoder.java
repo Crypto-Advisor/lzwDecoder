@@ -1,4 +1,4 @@
-package com.github.kosinw.lzw;
+//package com.github.kosinw.lzw;
 
 import java.io.*;
 import java.util.*;
@@ -72,8 +72,7 @@ public class LZWEncoder {
     }
 
     public static void main(String[] args) {
-        String filename = args[0];
-        
+        String filename = "lzw-file1.txt";
         LZWEncoder.encodeFile(filename);
         //Outputs a set of space delimited integers corresponding to each character's location within the library
     }
