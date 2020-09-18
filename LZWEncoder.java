@@ -48,7 +48,7 @@ public class LZWEncoder {
                 } else {
                     encodedString += dictionary.get(P) + " ";
                     dictionary.put(PC, currentKey);
-                    writer.write(PC +"\n");
+                    //writer.write(PC +"\n");
                     currentKey += 1;
                     P = "" + (char)current;
                 }
@@ -71,7 +71,7 @@ public class LZWEncoder {
     }
 
     public static void main(String[] args) {
-        String filename = "lzw-file1.txt";
+        String filename = "smol-movie.txt";
         LZWEncoder.encodeFile(filename);
         //Outputs a set of space delimited integers corresponding to each character's location within the library
     }
