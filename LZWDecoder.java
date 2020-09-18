@@ -15,7 +15,7 @@ public class LZWDecoder{
 	        ArrayList<Integer> output = new ArrayList<Integer>();
 	        String currentLine = bReader.readLine();
 
-	        while (currentLine.length()>1){
+	        while (currentLine.length()>1){ //Converts the String of codes into an Integer ArrayList
 	        	output.add(Integer.parseInt(currentLine.substring(0,currentLine.indexOf(" "))));
 	        	currentLine = currentLine.substring (currentLine.indexOf(" ")+1);
 	        }
@@ -29,13 +29,13 @@ public class LZWDecoder{
         	}
  
         	String currentString = "" + (char)(int)output.remove(0);
-        	StringBuffer resultString = new StringBuffer(currentString);
+        	StringBuffer resultString = new StringBuffer(currentString); //The String we add to and eventually submit
 
         	for (int k : output){
             	String entry;
-            	if (dictionary.containsKey(k)){
+            	if (dictionary.containsKey(k)){ //Checking to see if the current code is already in the dictionary
                 	entry = dictionary.get(k);
-            	}else if (k == dictionarySize){
+            	}else if (k == dictionarySize){ //Checking to see if the current code is outside the dictionary
                 	entry = currentString + currentString.charAt(0);
             	}else{
                 	throw new IllegalArgumentException("Bad compressed k: " + k);
@@ -43,7 +43,7 @@ public class LZWDecoder{
  
             	resultString.append(entry);
  
-            	dictionary.put(dictionarySize++, currentString + entry.charAt(0));
+            	dictionary.put(dictionarySize++, currentString + entry.charAt(0));//Adds the next entry to the dictionary
  
             	currentString = entry;
         	}
