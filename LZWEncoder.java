@@ -48,6 +48,7 @@ public class LZWEncoder {
                 } else {
                     encodedString += dictionary.get(P) + " ";
                     dictionary.put(PC, currentKey);
+                    writer.write(PC +"\n");
                     currentKey += 1;
                     P = "" + (char)current;
                 }
@@ -60,9 +61,7 @@ public class LZWEncoder {
                     encodedString += P;
                 }
             }
-            
             writer.write(encodedString);
-   
             reader.close();
             writer.close();
 
