@@ -14,34 +14,41 @@ public class LZWDecoder{
 			
 	        ArrayList<Integer> output = new ArrayList<Integer>();
 	        String currentLine = bReader.readLine();
+
 	        while (currentLine.length()>1){
 	        	output.add(Integer.parseInt(currentLine.substring(0,currentLine.indexOf(" "))));
 	        	currentLine = currentLine.substring (currentLine.indexOf(" ")+1);
 	        }
-        	int dictSize = 256;
+
+        	int dictionarySize = 256;
+
        		HashMap<Integer,String> dictionary = new HashMap<Integer,String>();
+       		
         	for (int i = 0; i < 256; i++){
             	dictionary.put(i, "" + (char)i);
         	}
  
-        	String w = "" + (char)(int)output.remove(0);
-        	StringBuffer result = new StringBuffer(w);
-        	for (int k : output) {
+        	String currentString = "" + (char)(int)output.remove(0);
+        	StringBuffer resultString = new StringBuffer(currentString);
+
+        	for (int k : output){
             	String entry;
-            	if (dictionary.containsKey(k))
+            	if (dictionary.containsKey(k)){
                 	entry = dictionary.get(k);
-            	else if (k == dictSize)
-                	entry = w + w.charAt(0);
-            	else
+            	}else if (k == dictionarySize){
+                	entry = currentString + currentString.charAt(0);
+            	}else{
                 	throw new IllegalArgumentException("Bad compressed k: " + k);
+            	}
  
-            	result.append(entry);
+            	resultString.append(entry);
  
-            	dictionary.put(dictSize++, w + entry.charAt(0));
+            	dictionary.put(dictionarySize++, currentString + entry.charAt(0));
  
-            	w = entry;
+            	currentString = entry;
         	}
-			bWriter.write(result.toString());
+
+			bWriter.write(resultString.toString());
 			bWriter.close();
 			bReader.close();    	
 
