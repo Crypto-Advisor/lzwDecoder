@@ -61,8 +61,8 @@ public class LZWEncoder {
 
             }
 
-            reader.close();
-            writer.close();
+            reader.close();//close reader
+            writer.close();//close writer
 
 
         } catch (IOException ex) {//catches errors
