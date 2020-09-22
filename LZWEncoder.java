@@ -39,12 +39,12 @@ public class LZWEncoder {
 
                 String PC = P + (char)current;
                 
-                if (dictionary.containsKey(PC)) {
+                if (dictionary.containsKey(PC)) {//if P+C is in the dictionary
                     P = PC;
-                } else if (currentKey >= max) {
+                } else if (currentKey >= max) {//if P+C is not in the dictionary and the max has already been reached (doesn't add to dictionary anymore)
                     writer.write(dictionary.get(P) + " ");
                     P = "" + (char)current;
-                } else {
+                } else {//if P+C is not in the dictionary and the max has not been reached yet (meaning you can still add to dictionary)
                     writer.write(dictionary.get(P) + " ");
                     dictionary.put(PC, currentKey);
                     currentKey += 1;
