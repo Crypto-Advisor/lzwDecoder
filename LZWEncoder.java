@@ -6,24 +6,23 @@ import java.util.*;
 // 32-bit words
 
 public class LZWEncoder {
-    public static void encodeFile(String filename) {
-        try {
+    public static void encodeFile(String filename) {//file name of encoded file as parameter
+        try {//tests code for errors while is being executed
             File originalFile = new File(filename);
             BufferedReader reader = new BufferedReader(new FileReader(originalFile));
 
-            File encoded = new File(originalFile.getAbsolutePath() + ".lzw");
-            BufferedWriter writer = new BufferedWriter(new FileWriter(encoded));
+            File encoded = new File(originalFile.getAbsolutePath() + ".lzw");//create .lzw output file
+            BufferedWriter writer = new BufferedWriter(new FileWriter(encoded));//sets up file writer to edit new file
 
-            int current = 0;
+            int current = 0;//tracks the current value from reader
 
-            HashMap<String, Integer> dictionary = new HashMap<String, Integer>();
+            HashMap<String, Integer> dictionary = new HashMap<String, Integer>();//dictionary for encoding
 
             String P = "";
-          //  String encodedString = "";
 
-            int currentKey = 0x100;
+            int currentKey = 0x100;//keeps track of current position in dictionary starting at 255
 
-            for (int i = 0; i < currentKey; ++i) {
+            for (int i = 0; i < currentKey; ++i) {//fills in first 255
                 dictionary.put("" + (char)i, i);
             }
 
@@ -53,7 +52,7 @@ public class LZWEncoder {
                 }
             }
 
-            if (!P.equals("")) {
+            if (!P.equals("")) {//edge case after loop
                 if (dictionary.containsKey(P)) {
                     writer.write(dictionary.get(P) + " ");
                 } else {
@@ -61,10 +60,12 @@ public class LZWEncoder {
                 }
 
             }
+
             reader.close();
             writer.close();
 
-        } catch (IOException ex) {
+
+        } catch (IOException ex) {//catches errors
             ex.printStackTrace();
         }
     }
