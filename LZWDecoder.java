@@ -57,7 +57,7 @@ public class LZWDecoder{
 	    }
 	}
 	public static void main (String [] args){
-		String filename = "smol-movie.txt.lzw"; //Sets filename variable
+		String filename = "lzw-text0.txt.lzw"; //Sets filename variable
 		LZWDecoder.decodeFile(filename); //Runs decode function
 	}
 }

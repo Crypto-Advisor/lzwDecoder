@@ -70,8 +70,10 @@ public class LZWEncoder {
     }
 
     public static void main(String[] args) {
-        String filename = "smol-movie.txt";
+        System.out.println("test");
+        String filename = "lzw-text0.txt";
         LZWEncoder.encodeFile(filename);
+        System.out.println("this is printing");
         //Outputs a set of space delimited integers corresponding to each character's location within the library
     }
 }
