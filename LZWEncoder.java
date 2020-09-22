@@ -19,7 +19,6 @@ public class LZWEncoder {
             HashMap<String, Integer> dictionary = new HashMap<String, Integer>();//dictionary for encoding
 
             String P = "";
-            String encodedString = "";//encoded strings stored here
 
             int currentKey = 0x100;//keeps track of current position in dictionary starting at 255
 
@@ -43,10 +42,10 @@ public class LZWEncoder {
                 if (dictionary.containsKey(PC)) {
                     P = PC;
                 } else if (currentKey >= max) {
-                    encodedString += dictionary.get(P) + " ";
+                    writer.write(dictionary.get(P) + " ");
                     P = "" + (char)current;
                 } else {
-                    encodedString += dictionary.get(P) + " ";
+                    writer.write(dictionary.get(P) + " ");
                     dictionary.put(PC, currentKey);
                     currentKey += 1;
                     P = "" + (char)current;
@@ -55,14 +54,16 @@ public class LZWEncoder {
 
             if (!P.equals("")) {//edge case after loop
                 if (dictionary.containsKey(P)) {
-                    encodedString += dictionary.get(P) + " ";
+                    writer.write(dictionary.get(P) + " ");
                 } else {
-                    encodedString += P;
+                    write.write(P);
                 }
+
             }
-            writer.write(encodedString);
-            reader.close();//close reader
-            writer.close();//close writer
+
+            reader.close();
+            writer.close();
+
 
         } catch (IOException ex) {//catches errors
             ex.printStackTrace();
