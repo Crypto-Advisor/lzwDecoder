@@ -8,10 +8,10 @@ import java.util.*;
 public class LZWEncoder {
     public static void encodeFile(String filename) {
         try {
-            File file = new File(filename);
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+            File originalFile = new File(filename);
+            BufferedReader reader = new BufferedReader(new FileReader(originalFile));
 
-            File encoded = new File(file.getAbsolutePath() + ".lzw");
+            File encoded = new File(originalFile.getAbsolutePath() + ".lzw");
             BufferedWriter writer = new BufferedWriter(new FileWriter(encoded));
 
             int current = 0;
@@ -70,7 +70,7 @@ public class LZWEncoder {
     }
 
     public static void main(String[] args) {
-        String filename = "smol-movie.txt";
+        String filename = "lzw-text0.txt";
         LZWEncoder.encodeFile(filename);
         //Outputs a set of space delimited integers corresponding to each character's location within the library
     }
