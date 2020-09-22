@@ -41,14 +41,13 @@ public class LZWDecoder{
                 	throw new IllegalArgumentException("Bad compressed k: " + k);
             	}
  
-            	resultString.append(entry);
+            	bWriter.write(entry);
  
             	dictionary.put(dictionarySize++, currentString + entry.charAt(0));//Adds the next entry to the dictionary
  
             	currentString = entry;
         	}
 
-			bWriter.write(resultString.toString());
 			bWriter.close(); //Close readers and writers to release system resources
 			bReader.close();    	
 

@@ -19,7 +19,7 @@ public class LZWEncoder {
             HashMap<String, Integer> dictionary = new HashMap<String, Integer>();
 
             String P = "";
-            String encodedString = "";
+          //  String encodedString = "";
 
             int currentKey = 0x100;
 
@@ -43,10 +43,10 @@ public class LZWEncoder {
                 if (dictionary.containsKey(PC)) {
                     P = PC;
                 } else if (currentKey >= max) {
-                    encodedString += dictionary.get(P) + " ";
+                    writer.write(dictionary.get(P) + " ");
                     P = "" + (char)current;
                 } else {
-                    encodedString += dictionary.get(P) + " ";
+                    writer.write(dictionary.get(P) + " ");
                     dictionary.put(PC, currentKey);
                     currentKey += 1;
                     P = "" + (char)current;
@@ -55,12 +55,12 @@ public class LZWEncoder {
 
             if (!P.equals("")) {
                 if (dictionary.containsKey(P)) {
-                    encodedString += dictionary.get(P) + " ";
+                    writer.write(dictionary.get(P) + " ");
                 } else {
-                    encodedString += P;
+                    write.write(P);
                 }
+
             }
-            writer.write(encodedString);
             reader.close();
             writer.close();
 
