@@ -12,12 +12,27 @@ public class LZWDecoder{
 			FileWriter fWriter = new FileWriter (outputFile); //Sets up file writer to edit new file
 			BufferedWriter bWriter = new BufferedWriter (fWriter);
 			
-	        ArrayList<Integer> output = new ArrayList<Integer>();
-	        String currentLine = bReader.readLine();
+	        ArrayList<Integer> encoderOutputList = new ArrayList<Integer>();
+	       // String currentLine = bReader.readLine();
 
-	        while (currentLine.length()>1){ //Converts the String of codes into an Integer ArrayList
-	        	output.add(Integer.parseInt(currentLine.substring(0,currentLine.indexOf(" "))));
-	        	currentLine = currentLine.substring (currentLine.indexOf(" ")+1);
+	    //    while (currentLine.length()>1){ //Converts the String of codes into an Integer ArrayList
+	    //    	output.add(Integer.parseInt(currentLine.substring(0,currentLine.indexOf(" "))));
+	     //   	currentLine = currentLine.substring (currentLine.indexOf(" ")+1);
+	       // }
+	        
+	        while(bReader.ready()){//read through the codestream, adding each code to encoderOutputList ArrayList
+	        	char currentCodestreamChar = (char)bReader.read();
+	        	String currentCodeString = "";
+	        	while(currentCodestreamChar!=" "){
+	        		currentCodeString += currentCodestreamChar;
+	        		if(br.ready()){
+	        			currentCodestreamChar = (char)bReader.read();
+	        		}
+	        		else{
+	        			break;
+	        		}
+	        	}
+	        	encoderOutputList.add(Integer.parseInt(currentCodeString));
 	        }
 
         	int dictionarySize = 256; // Number of ASCII symbols 0-255
@@ -28,10 +43,10 @@ public class LZWDecoder{
             	dictionary.put(i, "" + (char)i);
         	}
  
-        	String currentString = "" + (char)(int)output.remove(0);
+        	String currentString = "" + (char)(int)encoderOutputList.remove(0);
         	StringBuffer resultString = new StringBuffer(currentString); //The String we add to and eventually submit
 
-        	for (int k : output){
+        	for (int k : encoderOutputList){
             	String entry;
             	if (dictionary.containsKey(k)){ //Checking to see if the current code is already in the dictionary
                 	entry = dictionary.get(k);
