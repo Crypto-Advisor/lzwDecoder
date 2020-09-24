@@ -14,21 +14,21 @@ public class LZWEncoder {
             File encoded = new File(originalFile.getAbsolutePath() + ".lzw");//create .lzw output file
             BufferedWriter writer = new BufferedWriter(new FileWriter(encoded));//sets up file writer to edit new file
 
-            int current = 0;//tracks the current value from reader
+            int currentCharValue = 0;
 
             HashMap<String, Integer> dictionary = new HashMap<String, Integer>();//dictionary for encoding
 
-            String P = "";
+            String previousCharacters = "";
 
-            int currentKey = 0x100;//keeps track of current position in dictionary starting at 255
+            int currentDictionaryPosition = 0x100;//starting at 256
 
-            for (int i = 0; i < currentKey; ++i) {//fills in first 255
+            for (int i = 0; i < currentDictionaryPosition; ++i) {//fills in first 255 entries in dictionary
                 dictionary.put("" + (char)i, i);
             }
 
-            int max = 0x10000;
+            final int MAX_DICT_ENTRIES = 0x10000;//0x1000=65536
 
-            while ((current = reader.read()) != -1) {
+            while ((currentCharValue = reader.read()) != -1) {
                 //  Is the string P + C present in the dictionary?
                 // - If it is:    
                 //       - P = concat(P,C);
@@ -37,26 +37,26 @@ public class LZWEncoder {
                 //        - add the string P+C) to the dictionary
                 //        - P = C
 
-                String PC = P + (char)current;
+                String prevAndCurrent = previousCharacters + (char)currentCharValue;
                 
-                if (dictionary.containsKey(PC)) {//if P+C is in the dictionary
-                    P = PC;
-                } else if (currentKey >= max) {//if P+C is not in the dictionary and the max has already been reached (doesn't add to dictionary anymore)
-                    writer.write(dictionary.get(P) + " ");
-                    P = "" + (char)current;
+                if (dictionary.containsKey(prevAndCurrent)) {//if P+C is in the dictionary
+                    previousCharacters = prevAndCurrent;
+                } else if (currentDictionaryPosition >= MAX_DICT_ENTRIES) {//if P+C is not in the dictionary and the max has already been reached (doesn't add to dictionary anymore)
+                    writer.write(dictionary.get(previousCharacters) + " ");
+                    previousCharacters = "" + (char)currentCharValue;
                 } else {//if P+C is not in the dictionary and the max has not been reached yet (meaning you can still add to dictionary)
-                    writer.write(dictionary.get(P) + " ");
-                    dictionary.put(PC, currentKey);
-                    currentKey += 1;
-                    P = "" + (char)current;
+                    writer.write(dictionary.get(previousCharacters) + " ");
+                    dictionary.put(prevAndCurrent, currentDictionaryPosition);
+                    currentDictionaryPosition += 1;
+                    previousCharacters = "" + (char)currentCharValue;
                 }
             }
 
-            if (!P.equals("")) {//edge case after loop
-                if (dictionary.containsKey(P)) {
-                    writer.write(dictionary.get(P) + " ");
+            if (!previousCharacters.equals("")) {//if, at the end of the while loop, you still have a previous group of characters that needs to be added to the codestream
+                if (dictionary.containsKey(previousCharacters)) {
+                    writer.write(dictionary.get(previousCharacters) + " ");
                 } else {
-                    write.write(P);
+                    write.write(previousCharacters);
                 }
 
             }
@@ -71,8 +71,8 @@ public class LZWEncoder {
     }
 
     public static void main(String[] args) {
-        String filename = "lzw-text0.txt";
-        LZWEncoder.encodeFile(filename);
+        final String FILE_NAME = "lzw-text0.txt";//variable type should be final if it is never changed
+        LZWEncoder.encodeFile(FILE_NAME);
         //Outputs a set of space delimited integers corresponding to each character's location within the library
     }
 }
