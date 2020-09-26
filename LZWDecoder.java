@@ -23,9 +23,9 @@ public class LZWDecoder{
 	        while(bReader.ready()){//read through the codestream, adding each code to encoderOutputList ArrayList
 	        	char currentCodestreamChar = (char)bReader.read();
 	        	String currentCodeString = "";
-	        	while(currentCodestreamChar!=" "){
+	        	while(currentCodestreamChar!=' '){
 	        		currentCodeString += currentCodestreamChar;
-	        		if(br.ready()){
+	        		if(bReader.ready()){
 	        			currentCodestreamChar = (char)bReader.read();
 	        		}
 	        		else{

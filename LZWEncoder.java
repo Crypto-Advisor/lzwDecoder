@@ -56,7 +56,7 @@ public class LZWEncoder {
                 if (dictionary.containsKey(previousCharacters)) {
                     writer.write(dictionary.get(previousCharacters) + " ");
                 } else {
-                    write.write(previousCharacters);
+                    writer.write(previousCharacters);
                 }
 
             }
