@@ -13,19 +13,14 @@ public class LZWDecoder{
 			BufferedWriter bWriter = new BufferedWriter (fWriter);
 			
 	        ArrayList<Integer> encoderOutputList = new ArrayList<Integer>();
-	       // String currentLine = bReader.readLine();
-
-	    //    while (currentLine.length()>1){ //Converts the String of codes into an Integer ArrayList
-	    //    	output.add(Integer.parseInt(currentLine.substring(0,currentLine.indexOf(" "))));
-	     //   	currentLine = currentLine.substring (currentLine.indexOf(" ")+1);
-	       // }
+	      
 	        
 	        while(bReader.ready()){//read through the codestream, adding each code to encoderOutputList ArrayList
 	        	char currentCodestreamChar = (char)bReader.read();
 	        	String currentCodeString = "";
-	        	while(currentCodestreamChar!=" "){
+	        	while(currentCodestreamChar!=' '){
 	        		currentCodeString += currentCodestreamChar;
-	        		if(br.ready()){
+	        		if(bReader.ready()){
 	        			currentCodestreamChar = (char)bReader.read();
 	        		}
 	        		else{
@@ -42,7 +37,7 @@ public class LZWDecoder{
         	for (int i = 0; i < 256; i++){ //Adding ASCII symbols to dictionary hashap
             	dictionary.put(i, "" + (char)i);
         	}
- 
+        	
         	String currentString = "" + (char)(int)encoderOutputList.remove(0);
         	StringBuffer resultString = new StringBuffer(currentString); //The String we add to and eventually submit
 
@@ -56,13 +51,14 @@ public class LZWDecoder{
                 	throw new IllegalArgumentException("Bad compressed k: " + k);
             	}
  
-            	bWriter.write(entry);
+            	resultString.append(entry);
  
             	dictionary.put(dictionarySize++, currentString + entry.charAt(0));//Adds the next entry to the dictionary
  
             	currentString = entry;
         	}
-
+        	bWriter.write(resultString.toString());
+        	
 			bWriter.close(); //Close readers and writers to release system resources
 			bReader.close();    	
 
